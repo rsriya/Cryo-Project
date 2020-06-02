@@ -13,7 +13,20 @@ mug =
 gamma = #gamma should be in radians, also set the value to take care of plus/minus sign in (10)
 
 
+Nbar =
+Ns =
 epsoi =
 epsio =
+epsTRAlu=
+epsTRMylar=
+lambdaAlu=
+lambdatube=
+lambdal=
+lambdaPTFE=
+deltaAlu=
+deltaPTFE=
+deltaMLI=
+sigmal=
+TB = 
 
 
