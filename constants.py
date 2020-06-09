@@ -5,11 +5,7 @@ s =
 e = 
 rbend = 
 ktube =
-l = #length of division
-rhol =
-rhog =
-mul = 
-mug = 
+l = #length of section
 gamma = #gamma should be in radians, also set the value to take care of plus/minus sign in (10)
 
 
@@ -27,6 +23,6 @@ deltaAlu=
 deltaPTFE=
 deltaMLI=
 sigmal=
-TB = 
+
 
 

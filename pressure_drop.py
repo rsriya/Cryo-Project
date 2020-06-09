@@ -2,13 +2,13 @@ from constants import *
 import numpy as np
 from scipy import optimize
 
-def calc_rhotp(x):
+def calc_rhotp(x,rhol,rhog):
 	return 1/(x/rhog + (1-x)/rhol)
 
-def calc_mutp(x):
+def calc_mutp(x,mul,mug):
 	return 1/(x/mug + (1-x)/mul)
 
-def calc_alpha(x):
+def calc_alpha(x,rhol,rhog):
 	return 1/(1 + (1-x)/x * rhog/rhol)
 
 def calc_f_rigid(dii, Re):
@@ -20,34 +20,32 @@ def calc_f_flex(dii, Re):
 	b = 0.2987 * t*e/s**2 - 0.0313
 	f = (1 + 7.898 * dii/rbend) * 4 * a * Re ** b #(7) 
 
-def calc_phi2(x):
-	return (1 + x*(mul - mug)/mug)**(-0.25) * (1 + x*(rhol/rhog - 1))
 
-def calc_Pfr(mtot, tube, dii, Re, x, G):
+def calc_Pfr(mtot, tube, dii, Re, x, G,rhol,phisq):
 	if tube == 'r':
 		f = optimize.root_scalar(calc_f_rigid, args = (dii, Re))
 	else:
 		f = calc_f_flex(dii, Re)
-	Pfr = (calc_phi2(x) * f * G ** 2 * l) / (2 * dii * rhol)
+	Aii = np.pi * dii**2 / 4
+	G = mtot/Aii	
+	Pfr = (phisq * f * G ** 2 * l) / (2 * dii * rhol)
 	return Pfr
 
-def calc_Pg(x):
-	return calc_rhotp(x)*g*np.sin(gamma)*l 
+def calc_Pg(x,rhol,rhog):
+	return calc_rhotp(x,rhol,rhog)*g*np.sin(gamma)*l 
 
-def calc_Pacc(G, x, xout): #assuming xin = x
-	alphain = calc_alpha(x)
-	alphaout = calc_alpha(xout)
-	win = ((1-x)**2)/((1-alphain)*rhol) + (x**2)/(alphain*rhog)
-	wout = ((1-xout)**2)/((1-alphaout)*rhol) + (xout**2)/(alphaout*rhog)
+def calc_Pacc(G, x, xin, rhol,rhog): #assuming x = xout 
+	alphain = calc_alpha(xin,rhol,rhog)
+	alphaout = calc_alpha(x,rhol,rhog)
+	win = ((1-xin)**2)/((1-alphain)*rhol) + (xin**2)/(alphain*rhog)
+	wout = ((1-x)**2)/((1-alphaout)*rhol) + (x**2)/(alphaout*rhog)
 	return G**2 * (wout - win)
 
-def calc_Pfitt(c,K):
-	return calc_phi2(x)**0.5 * K * 0.5 * rhol * c**2
+def calc_Pfitt(c,K,rhol,phisq):
+	return phisq**0.5 * K * 0.5 * rhol * c**2
 
-def calc_Pout(Pin, mtot, tube, dii, Re, x, xout, fit, c, K):
-	Aii = np.pi * dii**2 / 4
-	G = mtot/Aii
-	return Pin - (calc_Pfr(mtot, tube, dii, Re, x, G) + calc_Pg(x) + calc_Pacc(G, x, xout) + calc_Pfitt(c,K))
+def calc_Pout(Pin, mtot, tube, dii, Re, x, xin, c, K, rhol,rhog,phisq):
+	return Pin - (calc_Pfr(mtot, tube, dii, Re, x, rhol, phisq) + calc_Pg(x,rhol,rhog) + calc_Pacc(G, x, xin, rhol, rhog) + calc_Pfitt(c,K,rhol,phisq))
 
 
  

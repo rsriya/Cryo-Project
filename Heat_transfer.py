@@ -2,8 +2,8 @@ from constants import *
 import math
 import numpy as np
 
-def calc_QconvA(NuLO, Twii, dii):
-	QconvA = NuLO * lambdal * (Twii-TB)/dii
+def calc_QconvA(NuLO, Twii, dii, Tb):
+	QconvA = NuLO * lambdal * (Twii-Tb)/dii
 	return QconvA
 
 def calc_QBA(cpl,Twii,Tb,Prl,r):
@@ -11,7 +11,7 @@ def calc_QBA(cpl,Twii,Tb,Prl,r):
 	return QBA
 
 def calc_QSNBA(NuLO, Twii, dii, cpl,Twii,Tb,Prl,r):
-	QSNBA = calc_QconvA(NuLO, Twii, dii) + calc_QBA(cpl,Twii,Tb,Prl,r)
+	QSNBA = calc_QconvA(NuLO, Twii, dii,Tb) + calc_QBA(cpl,Twii,Tb,Prl,r)
 	return QSNBA
 
 def calc_phi(rio, roi):
@@ -37,8 +37,8 @@ def calc_hFCE(x, NuLO, dii):
 	hFCE = 3.5 * (calc_Xtt(x))**(-0.5) * NuLO * lambdal/dii
 	return hFCE
 
-def calc_hSNB(Twii):
-	hSNB = calc_QSNBA(NuLO, Twii, dii, cpl,Twii,Tb,Prl,r) * (Twii - TB)**(-1) 
+def calc_hSNB(NuLO, Twii, dii, cpl,Twii,Tb,Prl,r):
+	hSNB = calc_QSNBA(NuLO, Twii, dii, cpl,Twii,Tb,Prl,r) * (Twii - Tb)**(-1) 
 	return hSNB
 
 def calc_Qrad(Aio, Aoi, rio, roi, Twio, TMLI):
@@ -54,8 +54,8 @@ def calc_QMLIcond(doi, TMLI, Twoi):
 	QMLI = lambdaAlu*deltaAlu*l/(Ns*np.pi*(doi+deltaMLI)) * (TMLI - Twoi)
 	return QMLI
 
-def calc_Qtube(Twoi, rii, roi, h):
-	Qtube = (Twoi - TB)/calc_Rtube(rii, roi, h)	
+def calc_Qtube(Twoi, rii, roi, h, Tb):
+	Qtube = (Twoi - Tb)/calc_Rtube(rii, roi, h)	
 	return Qtube
 
 def calc_QONB(A,deltaT,NuLO,r,dii,x):
