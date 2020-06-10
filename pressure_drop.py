@@ -21,31 +21,31 @@ def calc_f_flex(dii, Re):
 	f = (1 + 7.898 * dii/rbend) * 4 * a * Re ** b #(7) 
 
 
-def calc_Pfr(mtot, tube, dii, Re, x, G,rhol,phisq):
+def calc_Pfr(tube, dii, x, c, rhol, rhog, mul, phisq):
+	G = ((1-x)*rhol + x*rhog)*c
+	RLO = G*dii/mul
 	if tube == 'r':
-		f = optimize.root_scalar(calc_f_rigid, args = (dii, Re))
+		f = optimize.root_scalar(calc_f_rigid, args = (dii, ReLO))
 	else:
-		f = calc_f_flex(dii, Re)
-	Aii = np.pi * dii**2 / 4
-	G = mtot/Aii	
+		f = calc_f_flex(dii, ReLO)
 	Pfr = (phisq * f * G ** 2 * l) / (2 * dii * rhol)
 	return Pfr
 
-def calc_Pg(x,rhol,rhog):
+def calc_Pg(x,rhol,rhog, gamma): #Pressure loss
 	return calc_rhotp(x,rhol,rhog)*g*np.sin(gamma)*l 
 
-def calc_Pacc(G, x, xin, rhol,rhog): #assuming x = xout 
+def calc_Pacc(G, xout, xin, rhol,rhog):  
 	alphain = calc_alpha(xin,rhol,rhog)
-	alphaout = calc_alpha(x,rhol,rhog)
+	alphaout = calc_alpha(xout,rhol,rhog)
 	win = ((1-xin)**2)/((1-alphain)*rhol) + (xin**2)/(alphain*rhog)
-	wout = ((1-x)**2)/((1-alphaout)*rhol) + (x**2)/(alphaout*rhog)
+	wout = ((1-xout)**2)/((1-alphaout)*rhol) + (xout**2)/(alphaout*rhog)
 	return G**2 * (wout - win)
 
 def calc_Pfitt(c,K,rhol,phisq):
 	return phisq**0.5 * K * 0.5 * rhol * c**2
 
-def calc_Pout(Pin, mtot, tube, dii, Re, x, xin, c, K, rhol,rhog,phisq):
-	return Pin - (calc_Pfr(mtot, tube, dii, Re, x, rhol, phisq) + calc_Pg(x,rhol,rhog) + calc_Pacc(G, x, xin, rhol, rhog) + calc_Pfitt(c,K,rhol,phisq))
+def calc_Pout(Pin, tube, dii, xout, xin, c, K, rhol,rhog,phisq, gamma,mul):
+	return Pin - (calc_Pfr(tube, dii, xin, c, rhol, rhog, mul, phisq) + calc_Pg(xin,rhol,rhog, gamma) + calc_Pacc(G, xout, xin, rhol, rhog) + calc_Pfitt(c,K,rhol,phisq))
 
 
  

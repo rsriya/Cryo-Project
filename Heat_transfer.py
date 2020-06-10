@@ -62,7 +62,10 @@ def calc_QONB(A,deltaT,NuLO,r,dii,x):
 	QONB = A*98*(rhol-rhog)*sigmal*lambdal*deltaT*NuLO**2/(rhol*rhog*r*calc_Xtt(x)*dii**2)
 	return QONB
 
-def calc_Qspacer(dio, Twio, Twoi):
-	Qspacer = (dio/(2*lambdaPTFE)*np.log(dio/(doi+2*deltaMLI)) )**(-1) * np.pi*dio*deltaPTFE*0.1*(Twio - Twoi)
-	return Qspacer
+def calc_Qspacer(spacer, dio, Twio, Twoi): #spacer is a boolean which determines if a given section has a spacer in it or not
+	if spacer == 1:
+		Qspacer = (dio/(2*lambdaPTFE)*np.log(dio/(doi+2*deltaMLI)) )**(-1) * np.pi*dio*deltaPTFE*0.1*(Twio - Twoi)
+	else:
+		Qspacer = 0 
+	return Qspacer 
 

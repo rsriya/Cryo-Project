@@ -5,8 +5,8 @@ s =
 e = 
 rbend = 
 ktube =
-l = #length of section
-gamma = #gamma should be in radians, also set the value to take care of plus/minus sign in (10)
+l = 0.03#length of section
+gamma = #gamma should be in radians, also set the value to take care that we want pressure loss in (10)
 
 
 Nbar =
