@@ -10,7 +10,7 @@ def calc_QBA(cpl,Twii,Tb,Prl,r):
 	QBA = ( cpl*(Twii-Tb)/(Prl**(1.7)*r*0.169) )**3 / np.sqrt(sigmal/(g*(rhol-rhog)) ) * mul * r
 	return QBA
 
-def calc_QSNBA(NuLO, Twii, dii, cpl,Twii,Tb,Prl,r):
+def calc_QSNBA(NuLO, Twii, dii, cpl,Tb,Prl,r):
 	QSNBA = calc_QconvA(NuLO, Twii, dii,Tb) + calc_QBA(cpl,Twii,Tb,Prl,r)
 	return QSNBA
 
@@ -37,8 +37,8 @@ def calc_hFCE(x, NuLO, dii):
 	hFCE = 3.5 * (calc_Xtt(x))**(-0.5) * NuLO * lambdal/dii
 	return hFCE
 
-def calc_hSNB(NuLO, Twii, dii, cpl,Twii,Tb,Prl,r):
-	hSNB = calc_QSNBA(NuLO, Twii, dii, cpl,Twii,Tb,Prl,r) * (Twii - Tb)**(-1) 
+def calc_hSNB(NuLO, Twii, dii, cpl,Tb,Prl,r):
+	hSNB = calc_QSNBA(NuLO, Twii, dii, cpl,Tb,Prl,r) * (Twii - Tb)**(-1) 
 	return hSNB
 
 def calc_Qrad(Aio, Aoi, rio, roi, Twio, TMLI):
@@ -58,8 +58,8 @@ def calc_Qtube(Twoi, rii, roi, h, Tb):
 	Qtube = (Twoi - Tb)/calc_Rtube(rii, roi, h)	
 	return Qtube
 
-def calc_QONB(A,deltaT,NuLO,r,dii,x):
-	QONB = A*98*(rhol-rhog)*sigmal*lambdal*deltaT*NuLO**2/(rhol*rhog*r*calc_Xtt(x)*dii**2)
+def calc_QONBA(deltaT,NuLO,r,dii,x):
+	QONB = 98*(rhol-rhog)*sigmal*lambdal*deltaT*NuLO**2/(rhol*rhog*r*calc_Xtt(x)*dii**2)
 	return QONB
 
 def calc_Qspacer(spacer, dio, Twio, Twoi): #spacer is a boolean which determines if a given section has a spacer in it or not

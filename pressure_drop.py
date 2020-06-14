@@ -22,7 +22,7 @@ def calc_f_flex(dii, Re):
 
 
 def calc_Pfr(tube, dii, x, c, rhol, rhog, mul, phisq):
-	G = ((1-x)*rhol + x*rhog)*c
+	G = rhol*c
 	RLO = G*dii/mul
 	if tube == 'r':
 		f = optimize.root_scalar(calc_f_rigid, args = (dii, ReLO))
