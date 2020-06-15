@@ -1,11 +1,3 @@
-#To find
-#1. Subroutine to calculate Twio and Twoi, Twii, Tm
-#2. How to calculate Pin and Psv
-#3. How to find velocity (c and cout)
-#4. How to find rho and mu
-#5. 2nd and 3rd term in equation 36
-#6. deltaT in equation 22
-
 from pressure_drop import *
 from Heat_transfer import *
 
@@ -136,8 +128,8 @@ while True:
 			hout = hin[j] + Qtot/mtot -0.5*(cout**2-c**2)- g*np.sin(gamma)*l
 			xout = (hout - hl)/(hg - hl)
 			Poutk =  calc_Pout(Pinj[j], mtot, tube, dii, xout, xin, c, K, rhol,rhog,phisq,gamma,mul))
-		if (abs(Poutk - Poutk1) < 10**(-12)): #in MPa
-			break
+			if (abs(Poutk - Poutk1) < 10**(-12)): #in MPa
+				break
 		j = j+1
 		pfr = pfr + calc_Pfr(tube, dii, x, c, rhol, rhog, mul, phisq)
 		print(j)
